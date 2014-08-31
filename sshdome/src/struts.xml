@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 常量,用于解决中文乱码 -->
+	<constant name="struts.i18n.encoding" value="UTF-8"/>
+	<!-- 常量,用于设置上传文件大小,默认值是2097152(2M) -->
+	<constant name="struts.multipart.maxSize" value="10000000000"/>
+	<package name="default" extends="struts-default,json-default">
+        <!-- 返回类型,用于下载,解决取消下载报错问题 -->
+        <result-types>
+        	<result-type name="streamx" class="com.sunspoter.lib.web.struts2.dispatcher.StreamResultX"/>
+        </result-types>
+        <!-- 拦截器,用于拦截登录 -->
+        <interceptors>  
+            <interceptor name="checkLogin" class="com.hd.interceptor.MyInterceptor"/>  
+            <interceptor-stack name="checkLoginStack">  
+                <interceptor-ref name="checkLogin"></interceptor-ref>  
+                <interceptor-ref name="defaultStack"></interceptor-ref>  
+            </interceptor-stack> 
+        </interceptors> 
+        <!-- 默认拦截器,用于拦截登录,是这个包的默认拦截器,导入这个包的类都进行拦截 
+        <default-interceptor-ref name="checkLoginStack"/> -->
+        <!-- 全局返回,用于拦截器返回 -->
+        <global-results>
+        	<result name="backLogin">/page/login/login.jsp</result>
+        </global-results>
+	</package>
+</struts>
